@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>棒次表 | 北夸父2026</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">🏃 北夸父 2026</a>
+  <div class="nav-links">
+    <a href="index.html">首頁</a>
+    <a href="legs.html" class="active">棒次表</a>
+    <a href="runners.html">跑者</a>
+    <a href="checklist.html">清單</a>
+  </div>
+</nav>
+
+<div class="container">
+  <h1 style="margin:1rem 0 0.25rem">30 棒次詳細表</h1>
+  <p style="color:var(--color-text-muted);font-size:0.875rem;margin-bottom:0.5rem">宜蘭武荖坑 → 淡水，約 202 km</p>
+
+  <div class="filter-bar">
+    <button class="filter-btn active" data-car="all">全部</button>
+    <button class="filter-btn" data-car="A">A車</button>
+    <button class="filter-btn" data-car="B">B車</button>
+    <select class="filter-select" id="runner-select">
+      <option value="all">所有跑者</option>
+    </select>
+    <select class="filter-select" id="feel-select">
+      <option value="all">所有難度</option>
+      <option value="easy">清晨好跑</option>
+      <option value="warn">注意</option>
+      <option value="danger">危險</option>
+      <option value="night">夜間</option>
+    </select>
+    <span class="filter-count" id="count-label"></span>
+  </div>
+
+  <div id="legs-list"></div>
+</div>
+
+<script src="data.js"></script>
+<script>
+let filterCar    = 'all';
+let filterRunner = 'all';
+let filterFeel   = 'all';
+
+// populate runner select
+const sel = document.getElementById('runner-select');
+RUNNERS.forEach(r => {
+  const opt = document.createElement('option');
+  opt.value = r.name;
+  opt.textContent = r.name;
+  sel.appendChild(opt);
+});
+
+function feelLabel(feel) {
+  const fc = feelClass(feel);
+  const labels = { easy:'清晨好跑', warn:'注意', danger:'危險', night:'夜間' };
+  return `<span class="badge badge-${fc}">${labels[fc] || feel}</span>`;
+}
+
+function render() {
+  const list = document.getElementById('legs-list');
+  list.innerHTML = '';
+  let count = 0;
+
+  LEGS.forEach(leg => {
+    const fc = feelClass(leg.feel);
+    if (filterCar !== 'all' && leg.car !== filterCar) return;
+    if (filterRunner !== 'all' && leg.runner !== filterRunner) return;
+    if (filterFeel !== 'all' && fc !== filterFeel) return;
+
+    const isHR = HIGH_RISK_LEGS.includes(leg.no);
+    const note = HIGH_RISK_NOTES[leg.no] || '';
+    const carCls = leg.car === 'A' ? 'car-a' : 'car-b';
+
+    list.insertAdjacentHTML('beforeend', `
+      <div class="leg-card feel-${fc}" onclick="this.classList.toggle('open')">
+        <div class="leg-header">
+          <span class="leg-no">棒${leg.no}</span>
+          <span class="badge badge-${carCls}">${leg.car}車</span>
+          <span class="badge" style="background:var(--color-bg-secondary)">${leg.runner}</span>
+          ${isHR ? '<span class="badge badge-danger">⚠️ 高難度</span>' : ''}
+        </div>
+        <div class="leg-stats">
+          <span>📏 ${leg.km} km</span>
+          <span>↑${leg.up} m</span>
+          <span>↓${leg.dn} m</span>
+        </div>
+        <div class="leg-meta">
+          ${feelLabel(leg.feel)}
+          <span class="badge" style="background:var(--color-bg-secondary);color:var(--color-text-muted)">🕐 ${leg.time}</span>
+        </div>
+        <div class="leg-terrain">${leg.terrain}</div>
+        <div class="leg-detail">
+          <div>時段：${leg.time}</div>
+          <div>地形：${leg.terrain}</div>
+          <div>感受：${leg.feel}</div>
+          ${isHR ? `<div class="warn-note">⚠️ ${note}</div>` : ''}
+        </div>
+      </div>
+    `);
+    count++;
+  });
+
+  document.getElementById('count-label').textContent = `顯示 ${count} / 30 棒`;
+}
+
+// car filter buttons
+document.querySelectorAll('[data-car]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('[data-car]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    filterCar = btn.dataset.car;
+    render();
+  });
+});
+
+document.getElementById('runner-select').addEventListener('change', e => {
+  filterRunner = e.target.value;
+  render();
+});
+
+document.getElementById('feel-select').addEventListener('change', e => {
+  filterFeel = e.target.value;
+  render();
+});
+
+render();
+</script>
+</body>
+</html>

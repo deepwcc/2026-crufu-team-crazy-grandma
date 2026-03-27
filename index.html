@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>北夸父2026 | 夸父追日接力賽</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">🏃 北夸父 2026</a>
+  <div class="nav-links">
+    <a href="index.html" class="active">首頁</a>
+    <a href="legs.html">棒次表</a>
+    <a href="runners.html">跑者</a>
+    <a href="checklist.html">清單</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-emoji">🌄</div>
+  <h1>北夸父隊 2026</h1>
+  <div class="hero-sub">CRUFU RUN 夸父追日跨夜接力賽（北臺灣站）</div>
+  <div class="hero-sub">2026 / 4 / 11 – 12</div>
+  <div class="hero-route">宜蘭武荖坑 → 淡水｜202 km｜30棒</div>
+</div>
+
+<div class="container">
+
+  <!-- 總覽卡片 -->
+  <div class="stat-grid" id="stat-grid"></div>
+
+  <!-- A車跑者 -->
+  <div class="section-title"><span class="badge badge-car-a">A車</span> 崧・宜臻・溫泉・勳・浩安</div>
+  <div class="grid" id="grid-car-a"></div>
+
+  <!-- B車跑者 -->
+  <div class="section-title"><span class="badge badge-car-b">B車</span> June・Dean・鍾誠・凱欣・凱</div>
+  <div class="grid" id="grid-car-b"></div>
+
+  <!-- 高難度警示 -->
+  <div class="section-title">⚠️ 高難度棒次警示</div>
+  <div id="high-risk-list"></div>
+
+</div>
+
+<div class="footer">
+  <div>北夸父隊・10人30棒・加油！</div>
+  <a class="primary" href="https://focusline.com.tw/260411HC" target="_blank" rel="noopener">📋 前往報名</a>
+  <a href="legs.html">查看棒次表</a>
+</div>
+
+<script src="data.js"></script>
+<script>
+// 總覽卡片
+const stats = [
+  { val:"202", unit:"km", label:"總里程" },
+  { val:"30",  unit:"棒", label:"接力棒次" },
+  { val:"10",  unit:"人", label:"隊員" },
+  { val:"~30", unit:"hr", label:"預計時長" },
+];
+const statGrid = document.getElementById('stat-grid');
+stats.forEach(s => {
+  statGrid.insertAdjacentHTML('beforeend', `
+    <div class="stat-card">
+      <span class="stat-val">${s.val}</span>
+      <span class="stat-unit">${s.unit}</span>
+      <div class="stat-label">${s.label}</div>
+    </div>
+  `);
+});
+
+// 跑者快速卡片
+function renderRunnerGrid(car, containerId) {
+  const el = document.getElementById(containerId);
+  RUNNERS.filter(r => r.car === car).forEach(r => {
+    const cls = car === 'A' ? 'car-a' : 'car-b';
+    const initials = r.name.charAt(0);
+    el.insertAdjacentHTML('beforeend', `
+      <a class="mini-runner-card" href="runners.html#runner-${r.name}">
+        <div class="mini-avatar badge-${cls}">${initials}</div>
+        <div class="mini-runner-info">
+          <div class="mini-runner-name">${r.name}</div>
+          <div class="mini-runner-legs">棒 ${r.legs.join('、')}｜${r.km} km｜↑${r.up} m</div>
+        </div>
+        <span class="badge badge-${cls}">${car}車</span>
+      </a>
+    `);
+  });
+}
+renderRunnerGrid('A', 'grid-car-a');
+renderRunnerGrid('B', 'grid-car-b');
+
+// 高難度警示
+const hrList = document.getElementById('high-risk-list');
+HIGH_RISK_LEGS.forEach(no => {
+  const leg = LEGS.find(l => l.no === no);
+  const note = HIGH_RISK_NOTES[no] || '';
+  hrList.insertAdjacentHTML('beforeend', `
+    <div class="alert-card">
+      <div class="alert-card-header">
+        <span class="badge badge-danger">棒${leg.no}</span>
+        <span class="alert-card-title">${leg.runner}</span>
+        <span class="badge badge-${leg.car === 'A' ? 'car-a' : 'car-b'}">${leg.car}車</span>
+        <span class="badge badge-danger">${leg.feel}</span>
+        <span style="color:var(--color-text-muted);font-size:0.8rem;">${leg.km} km｜↑${leg.up} m</span>
+      </div>
+      <div class="alert-note">${note}</div>
+    </div>
+  `);
+});
+</script>
+</body>
+</html>

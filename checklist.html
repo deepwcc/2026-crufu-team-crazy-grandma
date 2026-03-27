@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>籌備清單 | 北夸父2026</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">🏃 北夸父 2026</a>
+  <div class="nav-links">
+    <a href="index.html">首頁</a>
+    <a href="legs.html">棒次表</a>
+    <a href="runners.html">跑者</a>
+    <a href="checklist.html" class="active">清單</a>
+  </div>
+</nav>
+
+<div class="container">
+  <h1 style="margin:1rem 0 0.5rem">籌備清單</h1>
+
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+  </div>
+  <div class="progress-label" id="progress-label">已完成 0 / 0 項</div>
+
+  <div id="cl-root"></div>
+
+  <div style="margin-top:1rem">
+    <button class="btn" id="reset-btn">全部重置</button>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script>
+const STORAGE_KEY = 'crufu_checklist_2026';
+
+const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+
+const root = document.getElementById('cl-root');
+
+CHECKLIST.forEach(group => {
+  root.insertAdjacentHTML('beforeend', `
+    <div class="cl-group">
+      <div class="cl-group-title">${group.icon} ${group.title}</div>
+      <div id="group-${group.id}"></div>
+    </div>
+  `);
+  const groupEl = document.getElementById(`group-${group.id}`);
+  group.items.forEach(item => {
+    const checked = !!saved[item.key];
+    groupEl.insertAdjacentHTML('beforeend', `
+      <label class="cl-item${checked ? ' checked' : ''}" data-key="${item.key}">
+        <input type="checkbox" class="cl-cb" data-key="${item.key}" ${checked ? 'checked' : ''}>
+        <div class="cl-check-box"></div>
+        <div class="cl-item-body">
+          <div class="cl-item-title">${item.title}</div>
+          <div class="cl-item-desc">${item.desc}</div>
+        </div>
+      </label>
+    `);
+  });
+});
+
+function updateProgress() {
+  const all = document.querySelectorAll('.cl-cb');
+  const done = document.querySelectorAll('.cl-cb:checked');
+  const pct = all.length ? Math.round(done.length / all.length * 100) : 0;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = `已完成 ${done.length} / ${all.length} 項`;
+}
+
+function saveChecklist() {
+  const state = {};
+  document.querySelectorAll('.cl-cb').forEach(cb => {
+    state[cb.dataset.key] = cb.checked;
+  });
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+document.querySelectorAll('.cl-item').forEach(label => {
+  label.addEventListener('click', () => {
+    const cb = label.querySelector('.cl-cb');
+    cb.checked = !cb.checked;
+    label.classList.toggle('checked', cb.checked);
+    saveChecklist();
+    updateProgress();
+  });
+});
+
+document.getElementById('reset-btn').addEventListener('click', () => {
+  if (!confirm('確定要重置所有勾選狀態？')) return;
+  document.querySelectorAll('.cl-cb').forEach(cb => { cb.checked = false; });
+  document.querySelectorAll('.cl-item').forEach(l => l.classList.remove('checked'));
+  localStorage.removeItem(STORAGE_KEY);
+  updateProgress();
+});
+
+updateProgress();
+</script>
+</body>
+</html>
