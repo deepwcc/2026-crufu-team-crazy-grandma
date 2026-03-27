@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>注意事項 | 北夸父2026</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">Team Crazy Grandma</a>
+  <div class="nav-links">
+    <a href="index.html">首頁</a>
+    <a href="legs.html">棒次表</a>
+    <a href="checklist.html">清單</a>
+    <a href="notes.html" class="active">注意事項</a>
+    <a href="training.html">訓練建議</a>
+    <a href="info.html">官方資訊</a>
+    <a href="meeting.html">行前會議</a>
+  </div>
+</nav>
+
+<div class="container">
+  <h1 style="margin:1rem 0 0.25rem">注意事項</h1>
+  <p style="color:var(--color-text-muted);font-size:0.875rem;margin-bottom:1.25rem">賽前請全員詳閱</p>
+
+  <div id="notes-root"></div>
+</div>
+
+<script>
+const NOTES = [
+  {
+    icon: "🏃",
+    title: "賽事規程與時間掌控",
+    items: [
+      { label: "計時點縮減", text: "僅有起跑、第 20 區、終點會紀錄時間，其餘棒次請自行配時。" },
+      { label: "關門時間", text: "只有第 20 區設有開關門時間，請務必嚴格控管配速。", warn: true },
+      { label: "起跑分流", text: "官方依據配速發車（可參考去年完賽時間），起跑前 20–30 分鐘需進行團拍。" },
+      { label: "號碼布規則", text: "必須固定於衣服正面，嚴禁連續接棒，接力區會進行檢錄。", warn: true },
+      { label: "路線提醒", text: "包含天橋路段；第 13、19、24、27 棒為具挑戰性的上山路段。" },
+    ]
+  },
+  {
+    icon: "🚗",
+    title: "補給車與交通安全",
+    items: [
+      { label: "車輛限制", text: "嚴禁使用貨車。每隊僅限一輛補給車停靠接力區（含 20 區）。", warn: true },
+      { label: "禁止跟隨", text: "嚴禁開車尾隨跑者（含拍照），避免造成危險與後車回堵。", warn: true },
+      { label: "標識黏貼", text: "官方貼紙請貼在車輛「前面右上方」及「後面左上方」。" },
+      { label: "山區控管", text: "19–26 棒僅限一台車上山；第 8 接力區腹地狹小，請縮短停留時間。" },
+      { label: "駕駛疲勞", text: "駕駛需有足夠休息，嚴防全車睡著。若發生車禍須取得三聯單以便理賠。", warn: true },
+      { label: "替代道路", text: "B車可行駛台 2 線避開擁堵。" },
+    ]
+  },
+  {
+    icon: "🎒",
+    title: "裝備與安全規範",
+    items: [
+      { label: "夜間裝備（必備）", text: "反光背心、頭燈、尾燈（第 1 棒即需配戴）。現場不販售尾燈！", warn: true },
+      { label: "通訊與導航", text: "手機、行動電源需充飽，開啟定位防止迷路，隊員間互留電話。" },
+      { label: "車輛配備", text: "務必投保車險，並隨車攜帶安全三角警示牌。" },
+      { label: "安全警覺", text: "遵守紅綠燈，耳機音量不可遮蓋環境音。注意野狗（21 棒有狗狗銅像別被嚇到）或野生動物。" },
+    ]
+  },
+  {
+    icon: "🌦️",
+    title: "天氣與跑者健康",
+    items: [
+      { label: "溫差對策", text: "白天需適時灑水降溫防止熱衰竭；晚上山區低溫，務必做好保暖。", warn: true },
+      { label: "惡劣天氣", text: "注意午後雷陣雨，若天候極端，請留意官方暫停比賽的通報。" },
+      { label: "補水叮嚀", text: "無論體感如何，皆需定時提醒選手補充水分。" },
+    ]
+  },
+  {
+    icon: "🎁",
+    title: "專屬優惠與應援",
+    items: [
+      { label: "道具製作", text: "可私訊官方申請 Logo 授權製作加油道具。" },
+      { label: "賽後放鬆", text: "金山海灣溫泉憑號碼布優惠價 250 元（注意開放時段限制）。" },
+    ]
+  },
+];
+
+const root = document.getElementById('notes-root');
+
+NOTES.forEach(section => {
+  const itemsHtml = section.items.map(item => `
+    <div class="note-item${item.warn ? ' note-warn' : ''}">
+      <span class="note-label">${item.label}</span>
+      <span class="note-text">${item.text}</span>
+    </div>
+  `).join('');
+
+  root.insertAdjacentHTML('beforeend', `
+    <div class="note-section">
+      <div class="note-section-title" style="background:rgba(255,77,77,0.08);color:var(--accent)">${section.icon} ${section.title}</div>
+      <div class="note-list">${itemsHtml}</div>
+    </div>
+  `);
+});
+</script>
+
+
+</body>
+</html>

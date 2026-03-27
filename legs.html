@@ -9,18 +9,23 @@
 <body>
 
 <nav class="navbar">
-  <a href="index.html" class="nav-brand">🏃 北夸父 2026</a>
+  <a href="index.html" class="nav-brand">Team Crazy Grandma</a>
   <div class="nav-links">
     <a href="index.html">首頁</a>
     <a href="legs.html" class="active">棒次表</a>
-    <a href="runners.html">跑者</a>
     <a href="checklist.html">清單</a>
+    <a href="notes.html">注意事項</a>
+    <a href="training.html">訓練建議</a>
+    <a href="info.html">官方資訊</a>
+    <a href="meeting.html">行前會議</a>
   </div>
 </nav>
 
 <div class="container">
-  <h1 style="margin:1rem 0 0.25rem">30 棒次詳細表</h1>
-  <p style="color:var(--color-text-muted);font-size:0.875rem;margin-bottom:0.5rem">宜蘭武荖坑 → 淡水，約 202 km</p>
+  <h1 style="margin:1rem 0 0.25rem">棒次表 & 接棒區</h1>
+  <p style="color:var(--color-text-muted);font-size:0.875rem;margin-bottom:0.5rem">宜蘭武荖坑 → 淡水，約 202 km｜點擊卡片展開接棒區地圖</p>
+
+  <a class="zone-full-route" href="https://ridewithgps.com/routes/53682178" target="_blank" rel="noopener">🗺️ 220K 全景路線圖</a>
 
   <div class="filter-bar">
     <button class="filter-btn active" data-car="all">全部</button>
@@ -44,11 +49,45 @@
 
 <script src="data.js"></script>
 <script>
+const ZONES = [
+  { no:1,  lat:24.616861, lng:121.833194, route:"https://ridewithgps.com/routes/53681234", note:"" },
+  { no:2,  lat:24.677361, lng:121.827250, route:"https://ridewithgps.com/routes/53681536", note:"" },
+  { no:3,  lat:24.734972, lng:121.818361, route:"https://ridewithgps.com/routes/53681573", note:"" },
+  { no:4,  lat:24.798250, lng:121.816250, route:"https://ridewithgps.com/routes/53681587", note:"" },
+  { no:5,  lat:24.861333, lng:121.832833, route:"https://ridewithgps.com/routes/53681601", note:"" },
+  { no:6,  lat:24.899889, lng:121.863389, route:"https://ridewithgps.com/routes/53681617", note:"進入烏石港，此棒注意" },
+  { no:7,  lat:24.941278, lng:121.894639, route:"https://ridewithgps.com/routes/53681628", note:"" },
+  { no:8,  lat:24.978806, lng:121.945889, route:"https://ridewithgps.com/routes/53681642", note:"接力區腹地狹小，請縮短停留時間" },
+  { no:9,  lat:25.004139, lng:122.001778, route:"https://ridewithgps.com/routes/53681689", note:"" },
+  { no:10, lat:25.020778, lng:121.950167, route:"https://ridewithgps.com/routes/53681701", note:"宜蘭往福隆方向，東興宮前廣場內" },
+  { no:11, lat:25.021778, lng:121.891111, route:"https://ridewithgps.com/routes/53681716", note:"" },
+  { no:12, lat:25.056083, lng:121.853000, route:"https://ridewithgps.com/routes/53681725", note:"" },
+  { no:13, lat:25.084667, lng:121.834972, route:"https://ridewithgps.com/routes/53681738", note:"山區路邊，無地址" },
+  { no:14, lat:25.114139, lng:121.819639, route:"https://ridewithgps.com/routes/53681751", note:"" },
+  { no:15, lat:25.143972, lng:121.787583, route:"https://ridewithgps.com/routes/53681771", note:"", bus:{ lat:25.160250, lng:121.732194, route:"https://ridewithgps.com/routes/53681851" } },
+  { no:16, lat:25.179944, lng:121.698139, route:"https://ridewithgps.com/routes/53681864", note:"" },
+  { no:17, lat:25.200722, lng:121.677389, route:"https://ridewithgps.com/routes/53681885", note:"進入野柳區" },
+  { no:18, lat:25.220889, lng:121.641694, route:"https://ridewithgps.com/routes/53681918", note:"" },
+  { no:19, lat:25.246028, lng:121.610694, route:"https://ridewithgps.com/routes/53681928", note:"注意左轉上山、上坡" },
+  { no:20, lat:25.264528, lng:121.629972, route:"https://ridewithgps.com/routes/53681934", note:"下坡" },
+  { no:21, lat:25.276472, lng:121.594833, route:"https://ridewithgps.com/routes/53681944", note:"注意左轉上山" },
+  { no:22, lat:25.239000, lng:121.581167, route:"https://ridewithgps.com/routes/53681953", note:"上坡" },
+  { no:23, lat:25.290194, lng:121.567361, route:"https://ridewithgps.com/routes/53681973", note:"" },
+  { no:24, lat:25.244611, lng:121.561722, route:"https://ridewithgps.com/routes/53681986", note:"連續上坡" },
+  { no:25, lat:25.285583, lng:121.522833, route:"https://ridewithgps.com/routes/53681994", note:"" },
+  { no:26, lat:25.261472, lng:121.479000, route:"https://ridewithgps.com/routes/53682006", note:"" },
+  { no:27, lat:25.218028, lng:121.511167, route:"https://ridewithgps.com/routes/53682015", note:"連續上坡" },
+  { no:28, lat:25.249306, lng:121.465333, route:"https://ridewithgps.com/routes/53682034", note:"" },
+  { no:29, lat:25.203278, lng:121.430694, route:"https://ridewithgps.com/routes/53682047", note:"" },
+  { no:30, lat:25.189667, lng:121.416833, route:"https://ridewithgps.com/routes/53682053", note:"" },
+];
+
+const ZONE_MAP = Object.fromEntries(ZONES.map(z => [z.no, z]));
+
 let filterCar    = 'all';
 let filterRunner = 'all';
 let filterFeel   = 'all';
 
-// populate runner select
 const sel = document.getElementById('runner-select');
 RUNNERS.forEach(r => {
   const opt = document.createElement('option');
@@ -75,8 +114,20 @@ function render() {
     if (filterFeel !== 'all' && fc !== filterFeel) return;
 
     const isHR = HIGH_RISK_LEGS.includes(leg.no);
-    const note = HIGH_RISK_NOTES[leg.no] || '';
+    const hrNote = HIGH_RISK_NOTES[leg.no] || '';
     const carCls = leg.car === 'A' ? 'car-a' : 'car-b';
+    const z = ZONE_MAP[leg.no];
+    const mapsUrl = `https://maps.google.com/?q=${z.lat},${z.lng}`;
+
+    const busHtml = z.bus ? `
+      <div class="zone-bus">
+        🚌 乘車段（基隆路段不跑）
+        <div class="zone-btn-row" style="margin-top:6px">
+          <a class="zone-btn" href="https://maps.google.com/?q=${z.bus.lat},${z.bus.lng}" target="_blank" rel="noopener">📍 乘車終點地圖</a>
+          <a class="zone-btn" href="${z.bus.route}" target="_blank" rel="noopener">🚴 乘車路線</a>
+        </div>
+      </div>
+    ` : '';
 
     list.insertAdjacentHTML('beforeend', `
       <div class="leg-card feel-${fc}" onclick="this.classList.toggle('open')">
@@ -100,7 +151,14 @@ function render() {
           <div>時段：${leg.time}</div>
           <div>地形：${leg.terrain}</div>
           <div>感受：${leg.feel}</div>
-          ${isHR ? `<div class="warn-note">⚠️ ${note}</div>` : ''}
+          ${z.note ? `<div style="margin-top:4px;color:var(--color-warn-text)">📌 ${z.note}</div>` : ''}
+          ${isHR ? `<div class="warn-note">⚠️ ${hrNote}</div>` : ''}
+          <div class="zone-coords">📍 ${z.lat.toFixed(6)}, ${z.lng.toFixed(6)}</div>
+          <div class="zone-btn-row" style="margin-top:8px">
+            <a class="zone-btn primary" href="${mapsUrl}" target="_blank" rel="noopener">📍 接棒區地圖</a>
+            <a class="zone-btn" href="${z.route}" target="_blank" rel="noopener">🚴 本棒路線</a>
+          </div>
+          ${busHtml}
         </div>
       </div>
     `);
@@ -110,7 +168,6 @@ function render() {
   document.getElementById('count-label').textContent = `顯示 ${count} / 30 棒`;
 }
 
-// car filter buttons
 document.querySelectorAll('[data-car]').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('[data-car]').forEach(b => b.classList.remove('active'));
@@ -132,5 +189,49 @@ document.getElementById('feel-select').addEventListener('change', e => {
 
 render();
 </script>
+
+<style>
+.zone-full-route {
+  display: inline-block;
+  margin: 0.5rem 0 0;
+  padding: 8px 16px;
+  background: var(--color-text);
+  color: var(--color-bg);
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+.zone-coords {
+  font-size: 0.775rem;
+  color: var(--color-text-muted);
+  margin-top: 6px;
+}
+.zone-btn-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.zone-btn {
+  display: inline-block;
+  padding: 7px 14px;
+  border-radius: 16px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-secondary);
+  color: var(--color-text);
+  font-size: 0.825rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+.zone-btn.primary {
+  background: var(--color-text);
+  color: var(--color-bg);
+  border-color: var(--color-text);
+}
+.zone-bus {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--color-border);
+  font-size: 0.825rem;
+  color: var(--color-text-muted);
+}
+</style>
+
 </body>
 </html>

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>行前會議 | 北夸父2026</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">Team Crazy Grandma</a>
+  <div class="nav-links">
+    <a href="index.html">首頁</a>
+    <a href="legs.html">棒次表</a>
+    <a href="checklist.html">清單</a>
+    <a href="notes.html">注意事項</a>
+    <a href="training.html">訓練建議</a>
+    <a href="info.html">官方資訊</a>
+    <a href="meeting.html" class="active">行前會議</a>
+  </div>
+</nav>
+
+<div class="hero" style="padding:48px 24px 40px">
+  <div class="hero-tag">今日行前討論 · 約 60 分鐘</div>
+  <h1 style="font-size:clamp(1.6rem,5vw,2.8rem)">行前會議<br><span class="highlight">大綱</span></h1>
+  <div class="hero-en">Pre-Race Team Meeting Agenda</div>
+  <div class="hero-stats" style="margin-top:24px">
+    <div class="hero-stat"><div class="val">6<span>項</span></div><div class="lbl">議程</div></div>
+    <div class="hero-stat"><div class="val">60<span>min</span></div><div class="lbl">總時長</div></div>
+    <div class="hero-stat"><div class="val">10<span>人</span></div><div class="lbl">出席</div></div>
+  </div>
+</div>
+
+<div class="container">
+
+  <div id="agenda-root"></div>
+
+  <div class="section-title">✅ 現場決議事項</div>
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 18px;color:var(--muted);font-size:0.875rem;min-height:120px">
+    <span style="opacity:0.4">會議中記錄於此…</span>
+  </div>
+
+</div>
+
+<script>
+const AGENDA = [
+  {
+    time: "00:00",
+    duration: "5 min",
+    icon: "👋",
+    title: "開場與點名",
+    color: "var(--blue)",
+    items: [
+      { text: "確認 10 人全員出席，未到者聯絡確認" },
+      { text: "說明會議目標：確保所有人對賽事流程、分工、安全規範有一致認知" },
+    ]
+  },
+  {
+    time: "00:05",
+    duration: "15 min",
+    icon: "🏃",
+    title: "棒次分工確認",
+    color: "var(--accent)",
+    items: [
+      { text: "逐一唸出 30 棒分工，各跑者口頭確認自己的 3 棒", warn: true },
+      { text: "說明預估跑完時間窗口，A/B 車換車點說明" },
+      { text: "重點棒次提醒：棒 13（溫泉，爬升 355m）、棒 9/10（正中午）、棒 19/24/27（深夜/爬坡）" },
+      { text: "確認乘車段：棒 15 結束後有基隆不跑段，B 車注意" },
+    ]
+  },
+  {
+    time: "00:20",
+    duration: "15 min",
+    icon: "🚗",
+    title: "車輛與後勤安排",
+    color: "var(--accent2)",
+    items: [
+      { text: "A 車（崧/宜臻/溫泉/勳/浩安）：確認司機姓名，備用司機？" },
+      { text: "B 車（June/Dean/鍾誠/凱欣/凱）：確認司機姓名，備用司機？" },
+      { text: "官方貼紙黏貼位置：前面右上方 + 後面左上方", warn: true },
+      { text: "山區管制：棒 19–26 僅限 1 台車上山，兩車如何協調接送？", warn: true },
+      { text: "棒 8 接力區腹地狹小，快停快走" },
+      { text: "B 車可走台 2 線避開擁堵段" },
+      { text: "確認離線地圖是否已下載完成" },
+    ]
+  },
+  {
+    time: "00:35",
+    duration: "10 min",
+    icon: "🎒",
+    title: "裝備清點",
+    color: "var(--green)",
+    items: [
+      { text: "頭燈 + 備用電池：全員確認（第 1 棒即需配戴！）", warn: true },
+      { text: "尾燈：現場不販售，請務必自備！", warn: true },
+      { text: "反光背心：夜間路段（棒 14–25）強制穿著" },
+      { text: "行動電源：賽程約 30 小時，手機滿電出發" },
+      { text: "急救包、肌貼、防曬乳由誰統一攜帶？" },
+      { text: "保暖外套：山區夜間氣溫偏低，跨夜路段務必備妥" },
+      { text: "車險確認、安全三角警示牌" },
+    ]
+  },
+  {
+    time: "00:45",
+    duration: "10 min",
+    icon: "📋",
+    title: "賽事規程 & 安全確認",
+    color: "var(--purple)",
+    items: [
+      { text: "計時點：起跑、第 20 區、終點——其餘棒次自行配時" },
+      { text: "關門時間在第 20 區，配速必須嚴格控管", warn: true },
+      { text: "號碼布：固定衣服正面，嚴禁連續接棒，接力區會檢錄", warn: true },
+      { text: "配速分流：起跑梯次已依調查安排，確認各自梯次" },
+      { text: "緊急狀況：互留手機號碼，A/B 車保持通訊，傷勢嚴重立即通知大會" },
+      { text: "若發生車禍須取得三聯單以便理賠" },
+    ]
+  },
+  {
+    time: "00:55",
+    duration: "5 min",
+    icon: "💬",
+    title: "Q&A 與雜事",
+    color: "var(--gold)",
+    items: [
+      { text: "開放提問，解答任何疑慮" },
+      { text: "賽後慶功餐廳確認（淡水老街 4/12 中午後）" },
+      { text: "4/10 宜蘭住宿集合時間確認" },
+      { text: "建立 A/B 車即時通訊群（若尚未建立）" },
+    ]
+  },
+];
+
+const root = document.getElementById('agenda-root');
+
+AGENDA.forEach((item, i) => {
+  const itemsHtml = item.items.map(it => `
+    <div class="agenda-item${it.warn ? ' agenda-warn' : ''}">
+      <span class="agenda-dot" style="background:${it.warn ? 'var(--accent)' : item.color}"></span>
+      <span>${it.text}</span>
+    </div>
+  `).join('');
+
+  root.insertAdjacentHTML('beforeend', `
+    <div class="agenda-block">
+      <div class="agenda-header" style="border-left-color:${item.color}">
+        <div class="agenda-meta">
+          <span class="agenda-time">${item.time}</span>
+          <span class="agenda-dur" style="color:${item.color}">${item.duration}</span>
+        </div>
+        <div class="agenda-title">${item.icon} ${item.title}</div>
+      </div>
+      <div class="agenda-body">${itemsHtml}</div>
+    </div>
+  `);
+});
+</script>
+
+<style>
+.agenda-block {
+  margin-bottom: 12px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.agenda-header {
+  padding: 14px 16px 10px;
+  border-left: 4px solid var(--accent);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.agenda-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.agenda-time {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.agenda-dur {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.agenda-title {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--text);
+}
+.agenda-body {
+  padding: 4px 16px 14px;
+  border-top: 1px solid var(--border);
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.agenda-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.85rem;
+  color: var(--muted);
+  line-height: 1.55;
+  padding-top: 4px;
+}
+.agenda-item.agenda-warn { color: var(--accent); }
+.agenda-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+</style>
+
+</body>
+</html>

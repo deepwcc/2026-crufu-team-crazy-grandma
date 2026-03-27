@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>訓練建議 | 北夸父2026</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">Team Crazy Grandma</a>
+  <div class="nav-links">
+    <a href="index.html">首頁</a>
+    <a href="legs.html">棒次表</a>
+    <a href="checklist.html">清單</a>
+    <a href="notes.html">注意事項</a>
+    <a href="training.html" class="active">訓練建議</a>
+    <a href="info.html">官方資訊</a>
+    <a href="meeting.html">行前會議</a>
+  </div>
+</nav>
+
+<div class="container">
+  <h1 style="margin:1rem 0 0.25rem">訓練建議</h1>
+  <p style="color:var(--color-text-muted);font-size:0.875rem;margin-bottom:1.25rem">針對 CRUFU RUN 跨夜接力賽特性設計，距離賽事還有約 2 週</p>
+
+  <div id="training-root"></div>
+</div>
+
+<script src="data.js"></script>
+<script>
+const TRAINING = [
+  {
+    icon: "📅",
+    title: "賽前 2 週：減量收操",
+    color: "easy",
+    items: [
+      { label: "降低週跑量", text: "將平時週跑量減至 50–60%，讓肌肉充分恢復，避免帶傷上場。" },
+      { label: "保持頻率", text: "每週仍維持 3 次輕鬆跑（30–40 分鐘），保留身體感覺，不要完全停跑。" },
+      { label: "最後長跑", text: "賽前 10 天完成最後一次長跑（10–12 km）；賽前最後 5 天只做輕鬆慢跑或快走。" },
+      { label: "充足睡眠", text: "4/10（賽前夜）確保至少 7 小時睡眠。跨夜賽期間睡眠嚴重剝奪，賽前存夠睡眠額度。" },
+    ]
+  },
+  {
+    icon: "⛰️",
+    title: "爬坡專項（重點棒次：13、19、24、27）",
+    color: "warn",
+    items: [
+      { label: "爬坡間歇", text: "找一段 200–400 m 的坡道，以中強度重複上坡 4–6 趟，下坡慢跑恢復。每週 1 次即可。" },
+      { label: "控制心率", text: "上坡時心率維持在最大心率的 75–85%，避免爆衝。棒 13 爬升 355 m，過快出發必然後段崩潰。" },
+      { label: "爬坡姿勢", text: "上坡縮短步幅、加快步頻，身體略微前傾，雙臂積極擺動。不要低頭，目視前方 3–5 公尺。" },
+      { label: "下坡練習", text: "棒 23、28 下降超過 300 m，下坡容易傷膝。練習「剎車式」著地：腳掌中前段落地，膝蓋微彎吸震。" },
+    ]
+  },
+  {
+    icon: "🌙",
+    title: "夜間跑準備（棒次 14–25，22:30 起跑）",
+    color: "night",
+    items: [
+      { label: "夜跑模擬", text: "賽前至少完成 1–2 次夜跑（晚上 10 點後出發），習慣頭燈照明範圍與視野縮減的感受。" },
+      { label: "頭燈調整", text: "練習時配戴比賽用頭燈，確認電池續航力、亮度設定。夜跑配速比白天慢 10–15% 是正常的。" },
+      { label: "睡眠剝奪模擬", text: "可安排一次晚睡早起的訓練日，了解自己睏意高峰在幾點，在賽中提前補給咖啡因。" },
+      { label: "保暖層", text: "山區夜間氣溫可能降至 12–15°C，夜跑練習時穿著壓縮褲與薄外套，評估保暖需求。" },
+    ]
+  },
+  {
+    icon: "💧",
+    title: "補給與飲食策略",
+    color: "easy",
+    items: [
+      { label: "賽中補水頻率", text: "每 20–30 分鐘補水一次，不等到口渴才喝。正中午路段（棒 9、10、11）每 15 分鐘補水。" },
+      { label: "電解質", text: "超過 45 分鐘的棒次需補充電解質（鹽錠或運動飲料），避免低血鈉。棒 10（8.2 km）、棒 29（8.7 km）尤其重要。" },
+      { label: "固體補給", text: "每棒結束後立即補充碳水化合物（香蕉、飯糰、麵包），不要等到肚子餓。" },
+      { label: "咖啡因策略", text: "深夜路段（棒 19–25）可於起跑前 30 分鐘攝取咖啡因（咖啡、能量錠），提升警覺性。習慣咖啡因者效果更顯著。" },
+      { label: "賽前飲食", text: "4/11 起跑當天早餐以好消化的碳水為主（稀飯、吐司、香蕉），避免高纖、高脂食物。" },
+    ]
+  },
+  {
+    icon: "💪",
+    title: "肌力與傷害預防",
+    color: "easy",
+    items: [
+      { label: "核心訓練", text: "每週 2 次核心訓練（棒式 3×60 秒、單腳硬舉 3×12），穩定骨盆減少跑步晃動、降低長距離後段塌陷風險。" },
+      { label: "臀腿強化", text: "深蹲、弓步、臀橋各 3 組，強化爬坡主要肌群。棒 27（凱）爬升 319 m 且體力已耗盡，臀肌力量決定後段表現。" },
+      { label: "肌貼使用", text: "膝蓋或髂脛束有舊傷者，賽前練習自行貼紮或請隊友協助，找到最適合的貼法。" },
+      { label: "賽後伸展", text: "每棒結束後立刻做 5 分鐘靜態伸展（股四頭肌、小腿、髖屈肌），減少下一棒出發時的僵硬感。" },
+    ]
+  },
+  {
+    icon: "🧠",
+    title: "心理準備",
+    color: "night",
+    items: [
+      { label: "分段心態", text: "每個人只跑 3 棒，每棒平均 6–8 km。賽中專注「完成這一棒」即可，不要想總里程。" },
+      { label: "深夜低潮", text: "凌晨 2–4 點是身體與心理最低谷。提前告知自己這段時間會很痛苦，這是正常生理反應，撐過去就好。" },
+      { label: "隊友支持", text: "非跑步時積極為隊友加油、準備補給。良好的隊伍氛圍是最強的動力來源。" },
+      { label: "配速紀律", text: "第一棒興奮感強，最容易衝過頭。用前 1 km 暖身配速跑，不要跟著別隊衝出去。" },
+    ]
+  },
+];
+
+const colorMap = {
+  easy:  { bg: 'rgba(46,204,113,0.08)',  text: 'var(--green)' },
+  warn:  { bg: 'rgba(255,140,66,0.08)',  text: 'var(--accent2)' },
+  night: { bg: 'rgba(155,89,182,0.08)',  text: 'var(--purple)' },
+  danger:{ bg: 'rgba(255,77,77,0.08)',   text: 'var(--accent)' },
+};
+
+const root = document.getElementById('training-root');
+
+TRAINING.forEach(section => {
+  const c = colorMap[section.color];
+  const itemsHtml = section.items.map(item => `
+    <div class="t-item">
+      <span class="t-label">${item.label}</span>
+      <span class="t-text">${item.text}</span>
+    </div>
+  `).join('');
+
+  root.insertAdjacentHTML('beforeend', `
+    <div class="t-section">
+      <div class="t-section-title" style="background:${c.bg};color:${c.text}">
+        ${section.icon} ${section.title}
+      </div>
+      <div class="t-list">${itemsHtml}</div>
+    </div>
+  `);
+});
+</script>
+
+
+</body>
+</html>
